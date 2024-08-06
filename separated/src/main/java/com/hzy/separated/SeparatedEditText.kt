@@ -24,153 +24,153 @@ import java.util.*
  */
 class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     AppCompatEditText(context, attrs, defStyleAttr) {
-    private lateinit var borderPaint: Paint //边界画笔
-    private lateinit var blockPaint: Paint//实心块画笔
-    private lateinit var textPaint: Paint
-    private lateinit var cursorPaint: Paint
-    private lateinit var borderRectF: RectF
-    private lateinit var boxRectF: RectF//小方块、小矩形
+    private lateinit var mBorderPaint: Paint //边界画笔
+    private lateinit var mBlockPaint: Paint//实心块画笔
+    private lateinit var mTextPaint: Paint
+    private lateinit var mCursorPaint: Paint
+    private lateinit var mBorderRectF: RectF
+    private lateinit var mBoxRectF: RectF//小方块、小矩形
 
     private var mWidth = 0 //可绘制宽度 = 0
     private var mHeight = 0 //可绘制高度 = 0
-    private var boxWidth = 0 //方块宽度 = 0
-    private var boxHeight = 0 //方块高度 = 0
-    private var spacing: Int//方块之间间隙
+    private var mBoxWidth = 0 //方块宽度 = 0
+    private var mBoxHeight = 0 //方块高度 = 0
+    private var mSpacing: Int//方块之间间隙
 
-    private var corner: Int//圆角
+    private var mCorner: Int//圆角
 
-    private var maxLength: Int//最大位数
+    private var mMaxLength: Int//最大位数
 
-    private var borderWidth: Int//边界粗细
+    private var mBorderWidth: Int//边界粗细
 
-    private var password: Boolean//是否是密码类型
+    private var mPassword: Boolean//是否是密码类型
 
-    private var showCursor: Boolean //显示光标
+    private var mShowCursor: Boolean //显示光标
 
-    private var cursorDuration: Int//光标闪动间隔
+    private var mCursorDuration: Int//光标闪动间隔
 
-    private var cursorWidth: Int//光标宽度
+    private var mCursorWidth: Int//光标宽度
 
-    private var cursorColor: Int//光标颜色
+    private var mCursorColor: Int//光标颜色
 
-    private var type: Int//实心方式、空心方式
+    private var mType: Int//实心方式、空心方式
 
-    private var highLightEnable: Boolean // 是否显示框框高亮
-    private var highLightStyle: Int // 高亮样式，仅支持 solid
+    private var mHighLightEnable: Boolean // 是否显示框框高亮
+    private var mHighLightStyle: Int // 高亮样式，仅支持 solid
 
-    private var showKeyboard: Boolean
+    private var mShowKeyboard: Boolean
 
-    private var borderColor: Int
-    private var blockColor: Int
-    private var textColor: Int
-    private var textSize: Int // 字体大小
-    private var highLightColor: Int // 框框高亮颜色
-    private var errorColor: Int // 框框错误颜色
+    private var mBorderColor: Int
+    private var mBlockColor: Int
+    private var mTextColor: Int
+    private var mTextSize: Int // 字体大小
+    private var mHighLightColor: Int // 框框高亮颜色
+    private var mErrorColor: Int // 框框错误颜色
 
-    private var highLightBefore = false // 待输入之前的一并高亮
-    private var isCursorShowing = false
-    private var contentText: CharSequence = ""
-    private var textChangedListener: TextChangedListener? = null
-    private lateinit var timer: Timer
-    private lateinit var timerTask: TimerTask
+    private var mHighLightBefore = false // 待输入之前的一并高亮
+    private var mIsCursorShowing = false
+    private var mContentText: CharSequence = ""
+    private var mTextChangedListener: TextChangedListener? = null
+    private lateinit var mTimer: Timer
+    private lateinit var mTimerTask: TimerTask
 
     private var showError = false
 
     fun setSpacing(spacing: Int) {
-        this.spacing = spacing
+        this.mSpacing = spacing
         postInvalidate()
     }
 
     fun setCorner(corner: Int) {
-        this.corner = corner
+        this.mCorner = corner
         postInvalidate()
     }
 
     fun setMaxLength(maxLength: Int) {
-        this.maxLength = maxLength
+        this.mMaxLength = maxLength
         this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
         initBox()
         clearText()
     }
 
     fun setBorderWidth(borderWidth: Int) {
-        this.borderWidth = borderWidth
+        this.mBorderWidth = borderWidth
         postInvalidate()
     }
 
     fun setPassword(password: Boolean) {
-        this.password = password
+        this.mPassword = password
         postInvalidate()
     }
 
     fun setShowCursor(showCursor: Boolean) {
-        this.showCursor = showCursor
+        this.mShowCursor = showCursor
         postInvalidate()
     }
 
     fun setHighLightEnable(enable: Boolean) {
-        this.highLightEnable = enable
+        this.mHighLightEnable = enable
         postInvalidate()
     }
 
     fun setCursorDuration(cursorDuration: Int) {
-        this.cursorDuration = cursorDuration
+        this.mCursorDuration = cursorDuration
         postInvalidate()
     }
 
     fun setCursorWidth(cursorWidth: Int) {
-        this.cursorWidth = cursorWidth
+        this.mCursorWidth = cursorWidth
         postInvalidate()
     }
 
     fun setCursorColor(cursorColor: Int) {
-        this.cursorColor = cursorColor
+        this.mCursorColor = cursorColor
         postInvalidate()
     }
 
     fun setType(@TypeDef type: Int) {
-        this.type = type
+        this.mType = type
         postInvalidate()
     }
 
     fun setBorderColor(borderColor: Int) {
-        this.borderColor = borderColor
+        this.mBorderColor = borderColor
         postInvalidate()
     }
 
     fun setBlockColor(blockColor: Int) {
-        this.blockColor = blockColor
+        this.mBlockColor = blockColor
         postInvalidate()
     }
 
     override fun setTextColor(textColor: Int) {
-        this.textColor = textColor
+        this.mTextColor = textColor
         postInvalidate()
     }
 
     fun setTextSize(textSize: Int) {
-        this.textSize = textSize
+        this.mTextSize = textSize
     }
 
     fun setHighLightColor(color: Int) {
-        this.highLightColor = color
+        this.mHighLightColor = color
         postInvalidate()
     }
 
     fun setErrorColor(color: Int) {
-        this.errorColor = color
+        this.mErrorColor = color
         postInvalidate()
     }
 
     fun showError() {
-        if (this.type in listOf(TYPE_SOLID, TYPE_UNDERLINE)) {
+        if (this.mType in listOf(TYPE_SOLID, TYPE_UNDERLINE)) {
             showError = true
             postInvalidate()
         }
     }
 
     fun setHighlightStyle(@StyleDef style: Int) {
-        this.highLightStyle = style
+        this.mHighLightStyle = style
         postInvalidate()
     }
 
@@ -179,55 +179,55 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
         this.isFocusable = true
         this.requestFocus()
         this.isCursorVisible = false
-        this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
-        if (showKeyboard) {
+        this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(mMaxLength))
+        if (mShowKeyboard) {
             Handler().postDelayed({
                 val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED)
             }, 500)
         }
 
-        blockPaint = Paint().apply {
+        mBlockPaint = Paint().apply {
             isAntiAlias = true
-            color = blockColor
+            color = mBlockColor
             style = Paint.Style.FILL
             strokeWidth = 1f
         }
 
-        textPaint = Paint().apply {
+        mTextPaint = Paint().apply {
             isAntiAlias = true
-            color = textColor
+            color = mTextColor
             textSize = textSize
             style = Paint.Style.FILL_AND_STROKE
             strokeWidth = 1f
         }
 
-        borderPaint = Paint().apply {
+        mBorderPaint = Paint().apply {
             isAntiAlias = true
-            color = borderColor
+            color = mBorderColor
             style = Paint.Style.STROKE
-            strokeWidth = borderWidth.toFloat()
+            strokeWidth = mBorderWidth.toFloat()
         }
 
-        cursorPaint = Paint().apply {
+        mCursorPaint = Paint().apply {
             isAntiAlias = true
-            color = cursorColor
+            color = mCursorColor
             style = Paint.Style.FILL_AND_STROKE
-            strokeWidth = cursorWidth.toFloat()
+            strokeWidth = mCursorWidth.toFloat()
         }
 
-        borderRectF = RectF()
-        boxRectF = RectF()
+        mBorderRectF = RectF()
+        mBoxRectF = RectF()
 
-        if (type == TYPE_HOLLOW) spacing = 0
+        if (mType == TYPE_HOLLOW) mSpacing = 0
 
-        timerTask = object : TimerTask() {
+        mTimerTask = object : TimerTask() {
             override fun run() {
-                isCursorShowing = !isCursorShowing
+                mIsCursorShowing = !mIsCursorShowing
                 postInvalidate()
             }
         }
-        timer = Timer()
+        mTimer = Timer()
 
         setOnLongClickListener {
             handlePaste(it)
@@ -260,11 +260,11 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     private fun initBox() {
-        boxWidth = (mWidth - spacing * (maxLength - 1)) / maxLength
-        boxHeight = mHeight
-        borderRectF.set(0f, 0f, mWidth.toFloat(), mHeight.toFloat())
+        mBoxWidth = (mWidth - mSpacing * (mMaxLength - 1)) / mMaxLength
+        mBoxHeight = mHeight
+        mBorderRectF.set(0f, 0f, mWidth.toFloat(), mHeight.toFloat())
 //        textPaint.textSize = boxWidth / 2.0f
-        textPaint.textSize = if (textSize == 0) boxWidth / 2.0f else spToPx(textSize)
+        mTextPaint.textSize = if (mTextSize == 0) mBoxWidth / 2.0f else spToPx(mTextSize)
     }
 
     private fun spToPx(dp: Int): Float {
@@ -273,7 +273,7 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
 
     override fun onDraw(canvas: Canvas) {
         drawRect(canvas)
-        drawText(canvas, contentText)
+        drawText(canvas, mContentText)
         drawCursor(canvas)
     }
 
@@ -283,100 +283,100 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
      * @param canvas
      */
     private fun drawCursor(canvas: Canvas) {
-        if (!isCursorShowing && showCursor && contentText.length < maxLength && hasFocus()) {
-            val cursorPosition = contentText.length + 1
+        if (!mIsCursorShowing && mShowCursor && mContentText.length < mMaxLength && hasFocus()) {
+            val cursorPosition = mContentText.length + 1
             val startX =
-                spacing * (cursorPosition - 1) + boxWidth * (cursorPosition - 1) + boxWidth / 2
-            val startY = boxHeight / 4
-            val endY = boxHeight - boxHeight / 4
+                mSpacing * (cursorPosition - 1) + mBoxWidth * (cursorPosition - 1) + mBoxWidth / 2
+            val startY = mBoxHeight / 4
+            val endY = mBoxHeight - mBoxHeight / 4
             canvas.drawLine(
                 startX.toFloat(),
                 startY.toFloat(),
                 startX.toFloat(),
                 endY.toFloat(),
-                cursorPaint
+                mCursorPaint
             )
         }
     }
 
     private fun drawRect(canvas: Canvas) {
-        val currentPos = contentText.length
-        loop@ for (i in 0 until maxLength) {
-            boxRectF[spacing * i + boxWidth * i.toFloat(), 0f, spacing * i + boxWidth * i + boxWidth.toFloat()] =
-                boxHeight.toFloat()
-            val light = highLightBefore.matchValue(currentPos >= i, currentPos == i)
-            when (type) {
+        val currentPos = mContentText.length
+        loop@ for (i in 0 until mMaxLength) {
+            mBoxRectF[mSpacing * i + mBoxWidth * i.toFloat(), 0f, mSpacing * i + mBoxWidth * i + mBoxWidth.toFloat()] =
+                mBoxHeight.toFloat()
+            val light = mHighLightBefore.matchValue(currentPos >= i, currentPos == i)
+            when (mType) {
                 TYPE_SOLID -> {
                     if (showError) {
-                        if (highLightStyle == STYLE_SOLID) {
+                        if (mHighLightStyle == STYLE_SOLID) {
                             canvas.drawRoundRect(
-                                boxRectF,
-                                corner.toFloat(),
-                                corner.toFloat(),
-                                blockPaint.apply { color = errorColor })
+                                mBoxRectF,
+                                mCorner.toFloat(),
+                                mCorner.toFloat(),
+                                mBlockPaint.apply { color = mErrorColor })
                         } else {
                             canvas.drawRoundRect(
-                                boxRectF,
-                                corner.toFloat(),
-                                corner.toFloat(),
-                                blockPaint.apply { color = blockColor })
+                                mBoxRectF,
+                                mCorner.toFloat(),
+                                mCorner.toFloat(),
+                                mBlockPaint.apply { color = mBlockColor })
                             val tempRect = RectF(
-                                boxRectF.left + borderWidth / 2,
-                                boxRectF.top + borderWidth / 2,
-                                boxRectF.right - borderWidth / 2,
-                                boxRectF.bottom - borderWidth / 2
+                                mBoxRectF.left + mBorderWidth / 2,
+                                mBoxRectF.top + mBorderWidth / 2,
+                                mBoxRectF.right - mBorderWidth / 2,
+                                mBoxRectF.bottom - mBorderWidth / 2
                             )
                             canvas.drawRoundRect(
                                 tempRect,
-                                corner.toFloat(),
-                                corner.toFloat(),
-                                borderPaint.apply { color = errorColor })
+                                mCorner.toFloat(),
+                                mCorner.toFloat(),
+                                mBorderPaint.apply { color = mErrorColor })
                         }
                         continue@loop
                     }
-                    if (highLightEnable && hasFocus() && light) {
-                        if (highLightStyle == STYLE_SOLID) {
+                    if (mHighLightEnable && hasFocus() && light) {
+                        if (mHighLightStyle == STYLE_SOLID) {
                             canvas.drawRoundRect(
-                                boxRectF,
-                                corner.toFloat(),
-                                corner.toFloat(),
-                                blockPaint.apply { color = highLightColor })
+                                mBoxRectF,
+                                mCorner.toFloat(),
+                                mCorner.toFloat(),
+                                mBlockPaint.apply { color = mHighLightColor })
                         } else {
                             canvas.drawRoundRect(
-                                boxRectF,
-                                corner.toFloat(),
-                                corner.toFloat(),
-                                blockPaint.apply { color = blockColor })
+                                mBoxRectF,
+                                mCorner.toFloat(),
+                                mCorner.toFloat(),
+                                mBlockPaint.apply { color = mBlockColor })
                             val tempRect = RectF(
-                                boxRectF.left + borderWidth / 2,
-                                boxRectF.top + borderWidth / 2,
-                                boxRectF.right - borderWidth / 2,
-                                boxRectF.bottom - borderWidth / 2
+                                mBoxRectF.left + mBorderWidth / 2,
+                                mBoxRectF.top + mBorderWidth / 2,
+                                mBoxRectF.right - mBorderWidth / 2,
+                                mBoxRectF.bottom - mBorderWidth / 2
                             )
                             canvas.drawRoundRect(
                                 tempRect,
-                                corner.toFloat(),
-                                corner.toFloat(),
-                                borderPaint.apply { color = highLightColor })
+                                mCorner.toFloat(),
+                                mCorner.toFloat(),
+                                mBorderPaint.apply { color = mHighLightColor })
                         }
                     } else {
                         canvas.drawRoundRect(
-                            boxRectF,
-                            corner.toFloat(),
-                            corner.toFloat(),
-                            blockPaint.apply { color = blockColor })
-                        if (highLightStyle == STYLE_BORDER) {
+                            mBoxRectF,
+                            mCorner.toFloat(),
+                            mCorner.toFloat(),
+                            mBlockPaint.apply { color = mBlockColor })
+                        if (mHighLightStyle == STYLE_BORDER) {
                             val tempRect = RectF(
-                                boxRectF.left + borderWidth / 2,
-                                boxRectF.top + borderWidth / 2,
-                                boxRectF.right - borderWidth / 2,
-                                boxRectF.bottom - borderWidth / 2
+                                mBoxRectF.left + mBorderWidth / 2,
+                                mBoxRectF.top + mBorderWidth / 2,
+                                mBoxRectF.right - mBorderWidth / 2,
+                                mBoxRectF.bottom - mBorderWidth / 2
                             )
                             canvas.drawRoundRect(
                                 tempRect,
-                                corner.toFloat(),
-                                corner.toFloat(),
-                                borderPaint.apply { color = borderColor })
+                                mCorner.toFloat(),
+                                mCorner.toFloat(),
+                                mBorderPaint.apply { color = mBorderColor })
                         }
                     }
 //
@@ -384,43 +384,43 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
                 TYPE_UNDERLINE -> {
                     if (showError) {
                         canvas.drawLine(
-                            boxRectF.left,
-                            boxRectF.bottom,
-                            boxRectF.right,
-                            boxRectF.bottom,
-                            borderPaint.apply { color = errorColor })
+                            mBoxRectF.left,
+                            mBoxRectF.bottom,
+                            mBoxRectF.right,
+                            mBoxRectF.bottom,
+                            mBorderPaint.apply { color = mErrorColor })
                         continue@loop
                     }
                     canvas.drawLine(
-                        boxRectF.left,
-                        boxRectF.bottom,
-                        boxRectF.right,
-                        boxRectF.bottom,
-                        borderPaint.apply {
-                            color = (highLightEnable && hasFocus() && light).matchValue(
-                                highLightColor,
-                                borderColor
+                        mBoxRectF.left,
+                        mBoxRectF.bottom,
+                        mBoxRectF.right,
+                        mBoxRectF.bottom,
+                        mBorderPaint.apply {
+                            color = (mHighLightEnable && hasFocus() && light).matchValue(
+                                mHighLightColor,
+                                mBorderColor
                             )
                         })
 
                 }
                 TYPE_HOLLOW -> {
-                    if (i == 0 || i == maxLength) continue@loop
+                    if (i == 0 || i == mMaxLength) continue@loop
                     canvas.drawLine(
-                        boxRectF.left,
-                        boxRectF.top,
-                        boxRectF.left,
-                        boxRectF.bottom,
-                        borderPaint.apply { color = borderColor })
+                        mBoxRectF.left,
+                        mBoxRectF.top,
+                        mBoxRectF.left,
+                        mBoxRectF.bottom,
+                        mBorderPaint.apply { color = mBorderColor })
                 }
 
             }
         }
-        if (type == TYPE_HOLLOW) canvas.drawRoundRect(
-            borderRectF,
-            corner.toFloat(),
-            corner.toFloat(),
-            borderPaint
+        if (mType == TYPE_HOLLOW) canvas.drawRoundRect(
+            mBorderRectF,
+            mCorner.toFloat(),
+            mCorner.toFloat(),
+            mBorderPaint
         )
     }
 
@@ -432,10 +432,10 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
     ) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
         showError = false
-        contentText = text
+        mContentText = text
         invalidate()
-        textChangedListener?.also {
-            if (text.length == maxLength)
+        mTextChangedListener?.also {
+            if (text.length == mMaxLength)
                 it.textCompleted(text)
             else
                 it.textChanged(text)
@@ -445,12 +445,12 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         //cursorFlashTime为光标闪动的间隔时间
-        timer.scheduleAtFixedRate(timerTask, 0, cursorDuration.toLong())
+        mTimer.scheduleAtFixedRate(mTimerTask, 0, mCursorDuration.toLong())
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        timer.cancel()
+        mTimer.cancel()
     }
 
     override fun onTextContextMenuItem(id: Int): Boolean {
@@ -470,31 +470,31 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
 
     private fun drawText(canvas: Canvas, charSequence: CharSequence) {
         for (i in charSequence.indices) {
-            val startX = spacing * i + boxWidth * i
+            val startX = mSpacing * i + mBoxWidth * i
             val startY = 0
             val baseX =
-                (startX + boxWidth / 2 - textPaint.measureText(charSequence[i].toString()) / 2).toInt()
+                (startX + mBoxWidth / 2 - mTextPaint.measureText(charSequence[i].toString()) / 2).toInt()
             val baseY =
-                (startY + boxHeight / 2 - (textPaint.descent() + textPaint.ascent()) / 2).toInt()
-            val centerX = startX + boxWidth / 2
-            val centerY = startY + boxHeight / 2
-            val radius = Math.min(boxWidth, boxHeight) / 6
-            if (password) canvas.drawCircle(
+                (startY + mBoxHeight / 2 - (mTextPaint.descent() + mTextPaint.ascent()) / 2).toInt()
+            val centerX = startX + mBoxWidth / 2
+            val centerY = startY + mBoxHeight / 2
+            val radius = Math.min(mBoxWidth, mBoxHeight) / 6
+            if (mPassword) canvas.drawCircle(
                 centerX.toFloat(),
                 centerY.toFloat(),
                 radius.toFloat(),
-                textPaint
+                mTextPaint
             ) else canvas.drawText(
                 charSequence[i].toString(),
                 baseX.toFloat(),
                 baseY.toFloat(),
-                textPaint
+                mTextPaint
             )
         }
     }
 
     fun setTextChangedListener(listener: TextChangedListener?) {
-        textChangedListener = listener
+        mTextChangedListener = listener
     }
 
     fun clearText() {
@@ -553,41 +553,41 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
             override fun onDestroyActionMode(actionMode: ActionMode) {}
         }
         val ta = context.obtainStyledAttributes(attrs, R.styleable.SeparatedEditText)
-        password = ta.getBoolean(R.styleable.SeparatedEditText_password, false)
-        showCursor = ta.getBoolean(R.styleable.SeparatedEditText_showCursor, true)
-        highLightEnable = ta.getBoolean(R.styleable.SeparatedEditText_highLightEnable, false)
-        borderColor = ta.getColor(
+        mPassword = ta.getBoolean(R.styleable.SeparatedEditText_password, false)
+        mShowCursor = ta.getBoolean(R.styleable.SeparatedEditText_showCursor, true)
+        mHighLightEnable = ta.getBoolean(R.styleable.SeparatedEditText_highLightEnable, false)
+        mBorderColor = ta.getColor(
             R.styleable.SeparatedEditText_borderColor,
             ContextCompat.getColor(getContext(), R.color.lightGrey)
         )
-        blockColor = ta.getColor(
+        mBlockColor = ta.getColor(
             R.styleable.SeparatedEditText_blockColor,
             ContextCompat.getColor(getContext(), R.color.purple_500)
         )
-        textColor = ta.getColor(
+        mTextColor = ta.getColor(
             R.styleable.SeparatedEditText_textColor,
             ContextCompat.getColor(getContext(), R.color.lightGrey)
         )
-        textSize = ta.getInt(R.styleable.SeparatedEditText_textSize, 0)
-        highLightColor = ta.getColor(
+        mTextSize = ta.getInt(R.styleable.SeparatedEditText_textSize, 0)
+        mHighLightColor = ta.getColor(
             R.styleable.SeparatedEditText_highlightColor,
             ContextCompat.getColor(getContext(), R.color.lightGrey)
         )
-        highLightBefore = ta.getBoolean(R.styleable.SeparatedEditText_highLightBefore, false)
-        cursorColor = ta.getColor(
+        mHighLightBefore = ta.getBoolean(R.styleable.SeparatedEditText_highLightBefore, false)
+        mCursorColor = ta.getColor(
             R.styleable.SeparatedEditText_cursorColor,
             ContextCompat.getColor(getContext(), R.color.lightGrey)
         )
-        corner = ta.getDimension(R.styleable.SeparatedEditText_corner, 0f).toInt()
-        spacing = ta.getDimension(R.styleable.SeparatedEditText_blockSpacing, 0f).toInt()
-        type = ta.getInt(R.styleable.SeparatedEditText_separateType, TYPE_HOLLOW)
-        highLightStyle = ta.getInt(R.styleable.SeparatedEditText_highlightStyle, STYLE_SOLID)
-        maxLength = ta.getInt(R.styleable.SeparatedEditText_maxLength, 6)
-        cursorDuration = ta.getInt(R.styleable.SeparatedEditText_cursorDuration, 500)
-        cursorWidth = ta.getDimension(R.styleable.SeparatedEditText_cursorWidth, 2f).toInt()
-        borderWidth = ta.getDimension(R.styleable.SeparatedEditText_borderWidth, 5f).toInt()
-        showKeyboard = ta.getBoolean(R.styleable.SeparatedEditText_showKeyboard, true)
-        errorColor = ta.getColor(
+        mCorner = ta.getDimension(R.styleable.SeparatedEditText_corner, 0f).toInt()
+        mSpacing = ta.getDimension(R.styleable.SeparatedEditText_blockSpacing, 0f).toInt()
+        mType = ta.getInt(R.styleable.SeparatedEditText_separateType, TYPE_HOLLOW)
+        mHighLightStyle = ta.getInt(R.styleable.SeparatedEditText_highlightStyle, STYLE_SOLID)
+        mMaxLength = ta.getInt(R.styleable.SeparatedEditText_maxLength, 6)
+        mCursorDuration = ta.getInt(R.styleable.SeparatedEditText_cursorDuration, 500)
+        mCursorWidth = ta.getDimension(R.styleable.SeparatedEditText_cursorWidth, 2f).toInt()
+        mBorderWidth = ta.getDimension(R.styleable.SeparatedEditText_borderWidth, 5f).toInt()
+        mShowKeyboard = ta.getBoolean(R.styleable.SeparatedEditText_showKeyboard, true)
+        mErrorColor = ta.getColor(
             R.styleable.SeparatedEditText_errorColor,
             ContextCompat.getColor(getContext(), R.color.errorColor)
         )
