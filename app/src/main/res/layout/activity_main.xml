@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    tools:context=".MainActivity">
+
+    <com.hzy.separated.SeparatedEditText
+        android:id="@+id/edit_solid"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="number"
+        android:textSize="10sp"
+        app:blockColor="#149B9EA3"
+        app:blockSpacing="4dp"
+        app:borderWidth="1dp"
+        app:corner="8dp"
+        app:cursorColor="#3E93B2"
+        app:cursorDuration="1000"
+        app:cursorWidth="1dp"
+        app:highLightEnable="true"
+        app:highlightColor="#3E93B2"
+        app:highlightStyle="@integer/style_border"
+        app:maxLength="6"
+        app:password="false"
+        app:separateType="@integer/type_solid"
+        app:showKeyboard="false"
+        app:textColor="#D9000000" />
+
+    <com.hzy.separated.SeparatedEditText
+        android:id="@+id/edit_underline"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:inputType="number"
+        app:blockSpacing="10dp"
+        app:borderColor="@color/lightGrey"
+        app:highLightBefore="true"
+        app:highLightEnable="true"
+        app:highlightColor="#D9000000"
+        app:separateType="@integer/type_underline"
+        app:showKeyboard="false"
+        app:textColor="#D9000000" />
+
+    <com.hzy.separated.SeparatedEditText
+        android:id="@+id/edit_hollow"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:inputType="number"
+        app:borderColor="@color/lightGrey"
+        app:borderWidth="1dp"
+        app:corner="5dp"
+        app:cursorColor="@android:color/holo_orange_light"
+        app:cursorWidth="1dp"
+        app:highLightEnable="true"
+        app:highlightColor="@color/teal_700"
+        app:maxLength="4"
+        app:separateType="@integer/type_hollow"
+        app:textColor="@color/teal_700"
+        app:textSize="16"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCursor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="光标" />
+
+        <Button
+            android:id="@+id/btnContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:text="内容" />
+
+    </LinearLayout>
+
+</LinearLayout>
