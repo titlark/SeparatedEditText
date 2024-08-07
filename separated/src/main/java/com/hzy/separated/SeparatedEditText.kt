@@ -586,7 +586,7 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
         mCursorDuration = ta.getInt(R.styleable.SeparatedEditText_cursorDuration, 500)
         mCursorWidth = ta.getDimension(R.styleable.SeparatedEditText_cursorWidth, 2f).toInt()
         mBorderWidth = ta.getDimension(R.styleable.SeparatedEditText_borderWidth, 5f).toInt()
-        mShowKeyboard = ta.getBoolean(R.styleable.SeparatedEditText_showKeyboard, true)
+        mShowKeyboard = ta.getBoolean(R.styleable.SeparatedEditText_showKeyboard, false)
         mErrorColor = ta.getColor(
             R.styleable.SeparatedEditText_errorColor,
             ContextCompat.getColor(getContext(), R.color.errorColor)
