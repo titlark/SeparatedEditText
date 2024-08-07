@@ -175,12 +175,13 @@ class SeparatedEditText @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     private fun init() {
-        this.isFocusableInTouchMode = true
-        this.isFocusable = true
-        this.requestFocus()
         this.isCursorVisible = false
         this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(mMaxLength))
         if (mShowKeyboard) {
+            this.isFocusableInTouchMode = true
+            this.isFocusable = true
+            this.requestFocus()
+
             Handler().postDelayed({
                 val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED)
